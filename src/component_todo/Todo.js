@@ -1,9 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import TodoForm from './TodoForm';
 import Todolist from './Todolist';
 
 export default function Todo() {
-    const[todoItems,setTodoItems] = useState([]);
+    const[todoItems,setTodoItems] = useState(()=>{
+        const localItems = localStorage.getItem("todosLocal")
+        if(localItems == null) return []
+        return JSON.parse(localItems)
+    });
+
+    useEffect(()=>{
+        localStorage.setItem("todosLocal", JSON.stringify(todoItems));
+    },[todoItems])
 
     function addHAndler(title){
         setTodoItems(currentItem=>{
